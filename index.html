@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Banku Care — Privacy-Preserving Screening-to-Care Continuity</title>
+<meta name="description" content="Banku Care turns abnormal screening results into zero-knowledge, clinician-approved referrals that close the loop. Prototype with synthetic data.">
+<style>
+:root{--bg:#faf7f2;--ink:#1e293b;--mut:#64748b;--line:#e4ded3;--teal:#0f766e;--tealD:#115e59;--em:#059669;--tint:#e6f3f0;--red:#b91c1c;--redB:#fee2e2;--amb:#b45309;--ambB:#fef3c7;--grn:#047857;--grnB:#d1fae5;--serif:Georgia,'Iowan Old Style','Times New Roman',serif;--sans:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;--mono:ui-monospace,SFMono-Regular,Menlo,monospace}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 var(--sans)}
+[hidden]{display:none!important}h1,h2,h3{font-family:var(--serif);font-weight:600;margin:0;letter-spacing:-.01em}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+.btn{font:600 14px var(--sans);border:1px solid var(--line);background:#fff;color:var(--ink);padding:9px 14px;border-radius:10px;cursor:pointer;transition:.15s}
+.btn:hover{border-color:var(--teal);color:var(--teal)}.btn.p{background:var(--teal);border-color:var(--teal);color:#fff}.btn.p:hover{background:var(--tealD);color:#fff}
+.btn.big{font-size:17px;padding:16px 26px;border-radius:12px;box-shadow:0 6px 20px -8px rgba(15,118,110,.6)}
+:focus-visible{outline:3px solid var(--em);outline-offset:2px}
+.hero{padding:64px 20px 48px;max-width:860px;margin:0 auto;text-align:center}
+.eyebrow{display:inline-block;font:600 12px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--teal);background:var(--tint);padding:6px 12px;border-radius:99px}
+.hero h1{font-size:clamp(44px,9vw,76px);margin:18px 0 4px}.hero .sub{font:italic clamp(18px,3vw,24px) var(--serif);color:var(--teal);margin:0 0 18px}
+.lead{max-width:640px;margin:0 auto 28px;color:#475569;font-size:17px}.fine{color:var(--mut);font-size:13px;margin:12px 0 36px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;text-align:left}
+.stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px}.stat b{display:block;font:600 26px var(--serif);color:var(--teal)}.stat span{font-size:13px;color:var(--mut)}
+.top{background:#fff;border-bottom:1px solid var(--line)}.top .wrap{display:flex;align-items:center;gap:12px;justify-content:space-between;padding:12px 20px;flex-wrap:wrap}
+.brand{font:600 20px var(--serif)}.brand i{color:var(--em);font-style:normal}.chip{font:600 12px var(--sans);background:var(--tint);color:var(--tealD);padding:5px 10px;border-radius:99px}
+.tabs{display:flex;gap:4px;overflow-x:auto;border-bottom:1px solid var(--line);background:var(--bg);position:sticky;top:0;z-index:5}
+.tab{font:600 14px var(--sans);background:none;border:0;border-bottom:3px solid transparent;padding:14px 16px;color:var(--mut);cursor:pointer;white-space:nowrap}
+.tab[aria-selected=true]{color:var(--teal);border-color:var(--teal)}
+main{padding:28px 0 60px}.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px}
+.grid2{display:grid;grid-template-columns:5fr 7fr;gap:20px}h2{font-size:26px;margin-bottom:6px}.mut{color:var(--mut);font-size:14px}
+.presets{display:grid;gap:10px;margin:16px 0}.pre{text-align:left;border:1px solid var(--line);background:#fff;border-radius:12px;padding:12px 14px;cursor:pointer;font:inherit;color:inherit;display:flex;gap:12px;align-items:center;transition:.15s}
+.pre:hover{border-color:var(--teal);background:var(--tint)}.pre .n{width:30px;height:30px;border-radius:50%;background:var(--tint);color:var(--teal);display:grid;place-items:center;font-weight:700;flex:none}.pre b{display:block;font-size:14px}.pre span{font-size:12.5px;color:var(--mut)}
+.drop{border:2px dashed #cbd5e1;border-radius:14px;padding:22px;text-align:center;cursor:pointer;color:var(--mut);background:#fdfcfa}.drop:hover{border-color:var(--teal)}
+.badge{font:700 11.5px var(--sans);padding:4px 10px;border-radius:99px;display:inline-block;letter-spacing:.03em}
+.High{background:var(--redB);color:var(--red)}.Moderate{background:var(--ambB);color:var(--amb)}.Low{background:var(--grnB);color:var(--grn)}
+.steps{list-style:none;padding:0;margin:16px 0}.steps li{padding:8px 0 8px 28px;position:relative;color:var(--mut);font-size:14px}.steps li:before{content:'○';position:absolute;left:4px}
+.steps li.on{color:var(--ink);font-weight:600}.steps li.on:before{content:'◔';color:var(--teal)}.steps li.done{color:var(--grn)}.steps li.done:before{content:'✓';color:var(--em);font-weight:700}
+.track{height:8px;background:#ece7dd;border-radius:9px;overflow:hidden}#bar{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--em))}
+table{width:100%;border-collapse:collapse;font-size:14px;margin:12px 0}th{font:600 11.5px var(--sans);text-transform:uppercase;letter-spacing:.05em;color:var(--mut);text-align:left}td,th{padding:8px 6px;border-bottom:1px solid var(--line)}
+.hi{color:var(--red);font-weight:700}.ok{color:var(--grn)}
+.zk{background:#0f2a2a;color:#a7f3d0;border-radius:12px;padding:14px;font:12.5px/1.6 var(--mono);word-break:break-all;margin:12px 0}.zk b{color:#fff}
+.red{font-family:var(--mono);letter-spacing:1px;color:#475569}
+.bound{background:var(--ambB);color:#78350f;border:1px solid #fcd34d;border-radius:10px;padding:9px 12px;font:600 13px var(--sans);display:flex;gap:8px;align-items:center}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}.kpi b{display:block;font:600 34px var(--serif);color:var(--teal)}.kpi span{font-size:13px;color:var(--mut)}
+.live{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--em);margin-right:6px;animation:p 1.6s infinite}@keyframes p{50%{opacity:.25}}
+.pt{display:grid;grid-template-columns:1.1fr 1.6fr 1.2fr;gap:16px;align-items:start;margin-bottom:12px}.pt.dn{opacity:.6}
+.zid{font:600 14px var(--mono)}.xai{height:7px;background:#ece7dd;border-radius:9px;margin:6px 0 4px;overflow:hidden}.xai i{display:block;height:100%;background:var(--teal)}
+.f{font-size:12.5px;color:var(--mut)}.acts{display:flex;flex-direction:column;gap:6px}.acts .btn{padding:7px 10px;font-size:13px}
+.st{font:600 12px var(--sans);color:var(--tealD)}
+.layers{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:18px 0}.ly{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;position:relative}
+.ly em{font:700 12px var(--mono);color:var(--em);font-style:normal}.ly h3{font-size:17px;margin:4px 0 6px}.ly p{font-size:13px;color:#475569;margin:0}
+.ly:not(:last-child):after{content:'→';position:absolute;right:-13px;top:50%;color:var(--teal);font-weight:700;z-index:2}
+.comp{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.comp h3{font-size:19px;color:var(--teal)}.comp li{font-size:13.5px;margin:6px 0}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:11px 18px;border-radius:10px;font-size:14px;z-index:9;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+@media(max-width:900px){.grid2,.comp{grid-template-columns:1fr}.layers{grid-template-columns:1fr}.ly:not(:last-child):after{content:'↓';right:auto;left:50%;top:auto;bottom:-16px}.pt{grid-template-columns:1fr}.acts{flex-direction:row;flex-wrap:wrap}}
+@media(max-width:520px){.stats,.kpis{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head><body>
+<section id="hero"><div class="hero">
+<span class="eyebrow">Future Health Digital Innovation Challenge · Abu Dhabi</span>
+<h1>Banku Care</h1><p class="sub">Privacy-Preserving Screening-to-Care Continuity Platform</p>
+<p class="lead">An abnormal screening result shouldn't end as a forgotten PDF. Banku Care converts it into a zero-knowledge, clinician-approved referral that closes the loop — without exposing raw patient identity.</p>
+<button class="btn p big" id="guest">Continue as Guest (Judge Demo) →</button>
+<p class="fine">No login · No sign-up · Synthetic data only · Prototype, not a medical device</p>
+<div class="stats"><div class="stat"><b>0 bytes</b><span>Raw PHI exposed to the coordination layer</span></div><div class="stat"><b>1.6 s</b><span>Average AI triage time</span></div><div class="stat"><b>88%</b><span>Referral completion (demo cohort)</span></div></div>
+</div></section>
+
+<div id="app" hidden>
+<header class="top"><div class="wrap"><div class="brand">Banku<i>Care</i></div><div style="display:flex;gap:10px;align-items:center"><span class="chip">Guest · Judge Demo</span><button class="btn" id="exit">Exit demo</button></div></div></header>
+<nav class="tabs" role="tablist"><div class="wrap" style="display:flex;width:100%">
+<button class="tab" role="tab" aria-selected="true" data-t="0">1 · Patient Screening Intake</button><button class="tab" role="tab" aria-selected="false" data-t="1">2 · Care Coordinator HITL Dashboard</button><button class="tab" role="tab" aria-selected="false" data-t="2">3 · Architecture &amp; Governance</button></div></nav>
+<main class="wrap">
+<section id="t0" role="tabpanel"><div class="grid2">
+<div class="card"><h2>Screening intake</h2><p class="mut">Upload a lab report or pick a synthetic preset. The scan runs on-device: liveness, OCR, then a zk-PHI commitment.</p>
+<label class="drop" for="file" tabindex="0">📄 Drop a lab scan here or click to browse<br><small>(simulated — any file runs a synthetic preset)</small></label><input type="file" id="file" hidden>
+<div class="presets" id="presets"></div></div>
+<div class="card" id="out"><div class="mut" style="padding:50px 10px;text-align:center">Select a preset to run the AI Vision OCR &amp; biometric liveness check.</div></div></div></section>
+
+<section id="t1" role="tabpanel" hidden><h2>Care coordinator · human-in-the-loop queue</h2>
+<div class="bound">⚠ Decision Support Only — Not a Diagnosis. Every action below requires coordinator or clinician approval.</div>
+<div class="kpis"><div class="card kpi"><b id="k1">88%</b><span><i class="live"></i>Referral Completion Rate</span></div><div class="card kpi"><b id="k2">1.6s</b><span><i class="live"></i>Avg Triage Time</span></div><div class="card kpi"><b id="k3">0 bytes</b><span><i class="live"></i>Raw PHI Exposed</span></div></div>
+<div id="q"></div></section>
+
+<section id="t2" role="tabpanel" hidden><h2>Architecture &amp; governance</h2><p class="mut">A five-layer pipeline where identity stays at the edge and only proofs, risk tiers and consented tasks travel.</p>
+<div class="layers">
+<div class="ly"><em>L1</em><h3>Vision AI</h3><p>On-device OCR + biometric liveness extract coded lab values (LOINC). The raw image never leaves the device.</p></div>
+<div class="ly"><em>L2</em><h3>ZK Privacy Vault</h3><p>Salted commitment and ZK-ID alias. Proves "HbA1c ≥ 6.5%" without revealing who or the document.</p></div>
+<div class="ly"><em>L3</em><h3>OPA Risk Router</h3><p>Policy-as-code (Rego) routes by risk tier, consent and jurisdiction. Every decision is auditable.</p></div>
+<div class="ly"><em>L4</em><h3>HITL Clinician Review</h3><p>Coordinators see XAI factors and approve, remind or escalate. Decision support only.</p></div>
+<div class="ly"><em>L5</em><h3>Closed-Loop FHIR Sync</h3><p>FHIR R4 ServiceRequest/Task status returns to the loop until care is confirmed complete.</p></div></div>
+<div class="comp">
+<div class="card"><h3>UAE PDPL</h3><ul><li>Consent-first processing and purpose limitation</li><li>Data minimisation via zk-PHI aliases</li><li>In-country health-data handling (ICT Health Law)</li></ul></div>
+<div class="card"><h3>Abu Dhabi DoH</h3><ul><li>ADHICS-aligned access control &amp; audit trail</li><li>Human oversight for AI-assisted triage</li><li>Designed for Malaffi HIE interoperability</li></ul></div>
+<div class="card"><h3>GDPR</h3><ul><li>Art. 9 special-category data protection</li><li>Art. 25 privacy by design and default</li><li>Art. 22 human review of automated decisions</li></ul></div></div>
+<p class="mut" style="margin-top:16px">Alignment mapping reflects design intent, not certification. The zk-PHI in this demo is a simulated SHA-256 salted commitment; production would use zero-knowledge circuits. All data shown is synthetic.</p></section>
+</main></div>
+<div id="toast" hidden></div>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)],sl=ms=>new Promise(r=>setTimeout(r,ms));
+const P=[
+{n:'High-Risk Abnormal HbA1c',tag:'HbA1c 8.4% · Pre-diabetic/Diabetic Alert',doc:'Clinical chemistry panel',risk:'High',sig:'HbA1c 8.4% — diabetic-range alert',conf:94,pr:98,
+m:[['HbA1c','8.4','%','< 5.7',1],['Fasting glucose','9.8','mmol/L','3.9–5.5',1],['eGFR','88','mL/min','> 60',0],['BMI','31.2','kg/m²','18.5–24.9',1]],x:[['HbA1c ≥ 6.5% threshold',52],['Fasting glucose elevation',31],['BMI > 30',17]]},
+{n:'Elevated BP & Lipid Screening',tag:'164/102 mmHg · Stage 2 Hypertension',doc:'Cardiometabolic screening',risk:'High',sig:'BP 164/102 mmHg + LDL 4.9 — Stage 2 hypertension',conf:91,pr:92,
+m:[['Blood pressure','164/102','mmHg','< 130/80',1],['LDL cholesterol','4.9','mmol/L','< 3.0',1],['HDL cholesterol','0.9','mmol/L','> 1.0',1],['Triglycerides','2.9','mmol/L','< 1.7',1]],x:[['Systolic ≥ 140 / diastolic ≥ 90',46],['LDL elevation',29],['Low HDL + high TG',25]]},
+{n:'Routine Normal Screening',tag:'All values in range · Low risk',doc:'Annual wellness panel',risk:'Low',sig:'All screening markers within reference range',conf:97,pr:20,
+m:[['HbA1c','5.2','%','< 5.7',0],['Blood pressure','118/76','mmHg','< 130/80',0],['LDL cholesterol','2.4','mmol/L','< 3.0',0],['Fasting glucose','4.9','mmol/L','3.9–5.5',0]],x:[['HbA1c in range',40],['BP in range',32],['Lipids in range',28]]}];
+let Q=[
+{z:'ZK-4A9C-71E2',sig:'HbA1c 8.4% — diabetic-range alert',conf:94,risk:'High',pr:98,st:'Awaiting review',x:'HbA1c 52% · glucose 31% · BMI 17%'},
+{z:'ZK-B21D-09F5',sig:'BP 168/104 mmHg + LDL 4.6 — Stage 2 hypertension',conf:91,risk:'High',pr:92,st:'Awaiting review',x:'Systolic 46% · LDL 29% · HDL/TG 25%'},
+{z:'ZK-93E0-C4A8',sig:'Fasting glucose 6.4 mmol/L, HbA1c 6.1% — pre-diabetic range',conf:82,risk:'Moderate',pr:70,st:'Awaiting review',x:'HbA1c 48% · glucose 34% · age 18%'},
+{z:'ZK-5D17-A63B',sig:'LDL 5.1 mmol/L with family history flag',conf:78,risk:'Moderate',pr:64,st:'Awaiting review',x:'LDL 55% · family history 30% · BMI 15%'},
+{z:'ZK-E8F2-3B90',sig:'Repeat BP 142/92 mmHg — Stage 2 threshold',conf:71,risk:'Moderate',pr:58,st:'Awaiting review',x:'Systolic 49% · repeat reading 33% · age 18%'},
+{z:'ZK-1C6A-D7E4',sig:'Routine screening normal — annual recall due',conf:96,risk:'Low',pr:15,st:'Awaiting review',x:'All markers in range 100%'}];
+let cur=null,busy=false,done=0,sent={};
+function toast(t){const e=$('#toast');e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,2400)}
+function go(i){$$('.tab').forEach(b=>b.setAttribute('aria-selected',b.dataset.t==i));[0,1,2].forEach(k=>$('#t'+k).hidden=k!=i);scrollTo(0,0)}
+$$('.tab').forEach(b=>b.onclick=()=>go(b.dataset.t));
+$('#guest').onclick=()=>{$('#hero').hidden=true;$('#app').hidden=false;go(0);renderQ()};
+$('#exit').onclick=()=>{$('#app').hidden=true;$('#hero').hidden=false;scrollTo(0,0)};
+$('#presets').innerHTML=P.map((p,i)=>`<button class="pre" data-i="${i}"><div class="n">${'abc'[i]}</div><div><b>${p.n}</b><span>${p.tag}</span></div></button>`).join('');
+$$('.pre').forEach(b=>b.onclick=()=>scan(+b.dataset.i));
+$('#file').onchange=e=>{if(e.target.files.length)scan(Math.floor(Math.random()*3));e.target.value=''};
+async function zk(seed){try{const r=crypto.getRandomValues(new Uint32Array(4)).join('-');const d=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(seed+'|'+r));return[...new Uint8Array(d)].map(x=>x.toString(16).padStart(2,'0')).join('')}catch(e){return[...Array(64)].map(()=>Math.floor(Math.random()*16).toString(16)).join('')}}
+async function scan(i){if(busy)return;busy=true;const p=P[i];
+const S=['Biometric liveness check — passed','AI Vision OCR — reading document','Extracting structured lab metrics','Generating zk-PHI commitment'];
+$('#out').innerHTML=`<h2>Scanning…</h2><p class="mut">${p.doc} · synthetic document</p><div class="track"><div id="bar"></div></div><ul class="steps">${S.map(s=>`<li>${s}</li>`).join('')}</ul>`;
+const L=$$('.steps li');requestAnimationFrame(()=>requestAnimationFrame(()=>{const b=$('#bar');b.style.transition='width 1.8s linear';b.style.width='100%'}));
+S.forEach((_,k)=>setTimeout(()=>{if(k)L[k-1].className='done';L[k].className='on'},k*450));
+const h=await zk(p.n);await sl(1800);const al='ZK-'+h.slice(0,4).toUpperCase()+'-'+h.slice(4,8).toUpperCase();cur={p,h,al,i};
+$('#out').innerHTML=`<div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center"><div><h2>${p.n}</h2><span class="mut">${p.doc} · Liveness ✓ · OCR confidence 99.2%</span></div><span class="badge ${p.risk}">${p.risk.toUpperCase()} RISK</span></div>
+<table><tr><th>Metric</th><th>Value</th><th>Reference</th><th></th></tr>${p.m.map(m=>`<tr><td>${m[0]}</td><td class="${m[4]?'hi':'ok'}"><b>${m[1]}</b> ${m[2]}</td><td>${m[3]}</td><td>${m[4]?'⚑ Abnormal':'✓ Normal'}</td></tr>`).join('')}</table>
+<p class="mut" style="margin:6px 0">Redacted at the edge: Name <span class="red">████████ ██████</span> · Emirates ID <span class="red">784-████-███████-█</span> · DOB <span class="red">██/██/████</span></p>
+<div class="zk"><b>zk-PHI</b> 0x${h}<br><b>ZK-ID</b> ${al} · <b>Raw PHI leaving device</b> 0 bytes</div>
+<b style="font-size:13px">Explainable AI · confidence ${p.conf}%</b>${p.x.map(x=>`<div class="f">${x[0]} — ${x[1]}%</div><div class="xai"><i style="width:${x[1]}%"></i></div>`).join('')}
+<div class="bound" style="margin:12px 0">⚠ Decision Support Only — Not a Diagnosis</div><button class="btn p" id="send">Send to Coordinator Queue →</button>`;
+$('#send').onclick=()=>{if(!sent[al]){sent[al]=1;Q.unshift({z:al,sig:p.sig,conf:p.conf,risk:p.risk,pr:p.pr+1,st:'Awaiting review',x:p.x.map(x=>x[0]+' '+x[1]+'%').join(' · ')});renderQ()}toast('Routed to queue as '+al);go(1)};
+busy=false}
+function renderQ(){$('#q').innerHTML=[...Q].sort((a,b)=>(a.st=='Care completed')-(b.st=='Care completed')||b.pr-a.pr).map(r=>{const d=r.st=='Care completed',i=Q.indexOf(r);return`<div class="card pt ${d?'dn':''}"><div><div class="zid">${r.z}</div><span class="badge ${r.risk}">${r.risk.toUpperCase()}</span><div class="st" style="margin-top:8px">● ${r.st}</div></div>
+<div><b style="font-size:14px">${r.sig}</b><div class="f" style="margin-top:6px">XAI confidence ${r.conf}%</div><div class="xai"><i style="width:${r.conf}%"></i></div><div class="f">Drivers: ${r.x}</div><div class="bound" style="margin-top:8px;font-size:12px;padding:6px 10px">Decision Support Only — Not a Diagnosis</div></div>
+<div class="acts"><button class="btn p" data-a="r" data-i="${i}">Approve Specialist Referral</button><button class="btn" data-a="m" data-i="${i}">Send Discreet Reminder</button><button class="btn" data-a="c" data-i="${i}">Mark Care Completed</button></div></div>`}).join('');
+$$('.acts .btn').forEach(b=>b.onclick=()=>{const r=Q[+b.dataset.i],a=b.dataset.a;
+if(a=='r'){r.st='Referral approved';toast('Specialist referral approved for '+r.z)}
+if(a=='m'){r.st='Reminder sent (discreet, no PHI in message)';toast('Discreet reminder queued for '+r.z)}
+if(a=='c'&&r.st!='Care completed'){r.st='Care completed';done++;toast('Loop closed — FHIR Task completed for '+r.z)}
+tick();renderQ()})}
+function tick(){const v=Math.min(97,88+done*.5);$('#k1').textContent=(v%1?v.toFixed(1):v)+'%'}
+setInterval(()=>{$('#k2').textContent=(1.5+Math.random()*.2).toFixed(1)+'s'},2400);
+</script></body></html>
