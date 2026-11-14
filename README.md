@@ -4,7 +4,11 @@ Banku Care is a prototype for privacy-preserving screening-to-care continuity. I
 
 ## Demo
 
-Open [`index.html`](./index.html) in a modern web browser. No build step, server, or external dependencies are required.
+**Live demo:** [banku-care.vercel.app](https://banku-care.vercel.app/)
+
+To run it locally, open [`index.html`](./index.html) in a modern web browser. The demo is a static HTML page with inline CSS and JavaScript; no build step, server, or environment variables are required.
+
+The project is deployed on Vercel at the live demo URL above.
 
 The demo includes:
 
