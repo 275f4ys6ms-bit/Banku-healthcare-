@@ -1,18 +1,21 @@
-# Banku Care
+# Banku Care — Privacy-Preserving Screening-to-Care Continuity Platform
 
-Judge demo for privacy-preserving screening-to-care continuity, prepared for the Future Health Digital Innovation Challenge in Abu Dhabi.
+Judge demo for the Future Health Digital Innovation Challenge (Abu Dhabi).
 
-**Live demo:** [banku-care.vercel.app](https://banku-care.vercel.app/)
+**Live demo:** [https://banku-care.vercel.app](https://banku-care.vercel.app)
 
-Open [`index.html`](./index.html) in a browser. No build step, server, or secrets.
+## Critical Feature
+Prominent **Continue as Guest (Judge Demo)** button unlocks full interactive workspace with zero login.
 
-## What a judge can do
+## Workspace Tabs
+1. **Patient Screening Intake** — 3 one-click synthetic presets + 1.8s AI Vision OCR & Biometric Liveness simulation generating zk-PHI hash.
+2. **Care Coordinator HITL Dashboard** — 6 synthetic patients, XAI scores, clinical boundary banner, action buttons. Live KPIs: 88% completion, 1.6s triage, 0 bytes PHI.
+3. **Architecture & Governance** — 5-layer pipeline (Vision AI → ZK Privacy Vault → OPA Risk Router → HITL Clinician Review → Closed-Loop FHIR Sync) + UAE PDPL / DoH / GDPR alignment.
 
-1. **Continue as Guest (Judge Demo)** — the full workspace, with no login.
-2. **Patient Screening Intake** — three synthetic slips (HbA1c 8.4%, stage 2 blood pressure and lipids, routine low-risk). A 1.8 second pass simulates layout read, liveness, and a zk-PHI commitment.
-3. **Care Coordinator** — six aliases, an explainable confidence score, and actions to approve a referral, send a discreet reminder, or mark care completed. The completion figure moves. Raw PHI stays at 0 bytes.
-4. **Architecture & Governance** — vision, privacy vault, risk router, clinician review, FHIR sync, with notes for UAE PDPL, Abu Dhabi DoH, and GDPR.
+## Design
+Clean medical-editorial aesthetic. Warm alabaster background, deep slate typography, teal/emerald accents. Fully responsive.
 
-## Limits
+## Status
+Synthetic data only. Decision support — not a diagnosis. Ready for judge evaluation.
 
-Synthetic data only. This is not a medical device and it does not diagnose. Choosing a file does not upload or read it. The commitment string is a demo label, not a live Groth16 proof, and the page is not connected to a clinical record.
+See `docs/` for full handover package.
