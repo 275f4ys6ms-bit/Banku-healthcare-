@@ -1,24 +1,18 @@
 # Banku Care
 
-Banku Care is a prototype for privacy-preserving screening-to-care continuity. It demonstrates how an abnormal screening result could be routed to a care coordinator for human review without sending raw patient identity through the coordination workflow.
-
-## Demo
+Judge demo for privacy-preserving screening-to-care continuity, prepared for the Future Health Digital Innovation Challenge in Abu Dhabi.
 
 **Live demo:** [banku-care.vercel.app](https://banku-care.vercel.app/)
 
-To run it locally, open [`index.html`](./index.html) in a modern web browser. The demo is a static HTML page with inline CSS and JavaScript; no build step, server, or environment variables are required.
+Open [`index.html`](./index.html) in a browser. No build step, server, or secrets.
 
-The project is deployed on Vercel at the live demo URL above.
+## What a judge can do
 
-The demo includes:
+1. **Continue as Guest (Judge Demo)** — the full workspace, with no login.
+2. **Patient Screening Intake** — three synthetic slips (HbA1c 8.4%, stage 2 blood pressure and lipids, routine low-risk). A 1.8 second pass simulates layout read, liveness, and a zk-PHI commitment.
+3. **Care Coordinator** — six aliases, an explainable confidence score, and actions to approve a referral, send a discreet reminder, or mark care completed. The completion figure moves. Raw PHI stays at 0 bytes.
+4. **Architecture & Governance** — vision, privacy vault, risk router, clinician review, FHIR sync, with notes for UAE PDPL, Abu Dhabi DoH, and GDPR.
 
-- A patient screening intake with three synthetic screening presets and a simulated file-upload flow.
-- A simulated scan showing liveness, OCR, metric extraction, and creation of a salted SHA-256 commitment.
-- A care coordinator dashboard for reviewing, approving referrals, sending reminders, and marking care complete.
-- An architecture and governance overview covering the prototype's intended privacy and interoperability concepts.
+## Limits
 
-## Important limitations
-
-This is a demonstration prototype, not a medical device or clinical decision system. It does not process uploaded documents: choosing a file only starts a synthetic preset. Screening values, queue entries, and performance figures are illustrative demo data. The displayed SHA-256 commitment is not a zero-knowledge proof, and the prototype does not connect to clinical systems or implement the listed regulatory controls.
-
-Do not use this demo for diagnosis, treatment, or real patient information.
+Synthetic data only. This is not a medical device and it does not diagnose. Choosing a file does not upload or read it. The commitment string is a demo label, not a live Groth16 proof, and the page is not connected to a clinical record.
